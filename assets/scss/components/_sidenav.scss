@@ -20,7 +20,6 @@
     background-color: $sidenav-bg;
     overflow-x: hidden;
     overflow-y: auto;
-    display: table;
     table-layout: fixed;
     position: relative;
     display: block;
@@ -45,7 +44,6 @@
             display: block;
             color: $white;
             opacity: 0.75;
-            font-weight: $font-weight-500;
         }
 
         > li > a:focus,

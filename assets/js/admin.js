@@ -7,10 +7,12 @@ jQuery(function ($) {
     $(function () {
         $('a, span, button').tooltip({placement: 'bottom'});
 
+        $.fn.select2.defaults.set('width', null);
         $.fn.select2.defaults.set('theme', 'bootstrap');
-        $('select.form-control').select2({minimumResultsForSearch: 10});
+        $.fn.select2.defaults.set('minimumResultsForSearch', 10);
+        $('select.form-control', document).select2();
 
-        $('.alert').alert();
+        $('.alert', document).alert();
     });
 
     // List Filter State Toggle
@@ -158,4 +160,5 @@ jQuery(function ($) {
                 $modal.find('[data-modal-input="'+attrName+'"]').val(attrValue)
             }
         });
-    })})
+    })
+})
