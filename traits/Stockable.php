@@ -8,7 +8,7 @@ trait Stockable
     {
         self::extend(function (self $model) {
             $model->relation['morphMany']['stocks'] = [
-                'Admin\Models\Stocks_model', 'name' => 'stockable', 'delete' => TRUE,
+                'Admin\Models\Stocks_model', 'name' => 'stockable', 'delete' => true,
             ];
 
             $model->appends[] = 'stock_qty';
@@ -17,20 +17,43 @@ trait Stockable
                 'stock_qty' => 'integer',
             ]);
         });
-
-        self::saved(function (self $model) {
-            $model->deleteDetachedStocks();
-        });
     }
 
     public function getStockQtyAttribute()
     {
-        return $this->stocks()->sum('quantity');
+        return $this->getTrackableStocks()->sum('quantity');
     }
 
     //
     //
     //
+
+    public function getStockableLocations()
+    {
+        return $this->locations;
+    }
+
+    public function getStockableName()
+    {
+        return $this->menu_name;
+    }
+
+    public function getTrackableStocks($location = null)
+    {
+        return $this->getAvailableStocks($location)->where('is_tracked', true);
+    }
+
+    public function getAvailableStocks($location = null)
+    {
+        if (!is_null($location))
+            return $this->stocks->where('location_id', is_numeric($location) ? $location : $location->getKey());
+
+        $locations = $this->getStockableLocations();
+        if ($locations && $ids = $locations->pluck('location_id')->all())
+            return $this->stocks->whereIn('location_id', $ids);
+
+        return $this->stocks;
+    }
 
     public function getStockByLocation($location)
     {
@@ -41,42 +64,23 @@ trait Stockable
 
     public function outOfStock($location = null)
     {
-        $stocks = $this->stocks->where('is_tracked', TRUE);
+        $stocks = $this->getTrackableStocks($location);
 
         if ($stocks->isEmpty())
-            return FALSE;
+            return false;
 
-        if (!is_null($location))
-            $stocks = $stocks->where('location_id', is_numeric($location) ? $location : $location->getKey());
-
-        $stocks = $stocks->filter(function ($stock) {
+        return $stocks->filter(function ($stock) {
             return $stock->outOfStock();
-        });
-
-        return $stocks->isNotEmpty();
+        })->isNotEmpty();
     }
 
     public function checkStockLevel($quantity, $location = null)
     {
-        $stocks = $this->stocks->where('is_tracked', TRUE);
+        $stocks = $this->getTrackableStocks($location);
 
         if ($stocks->isEmpty())
-            return TRUE;
-
-        if (!is_null($location))
-            $stocks = $stocks->where('location_id', is_numeric($location) ? $location : $location->getKey());
+            return true;
 
         return $stocks->sum('quantity') >= $quantity;
-    }
-
-    public function deleteDetachedStocks()
-    {
-        $idsToKeep = $this->hasRelation('locations')
-            ? $this->locations()->get()->pluck('location_id')->all()
-            : $this->option->locations()->get()->pluck('location_id')->all();
-
-        $this->stocks()
-            ->whereNotIn('location_id', $idsToKeep)
-            ->delete();
     }
 }
