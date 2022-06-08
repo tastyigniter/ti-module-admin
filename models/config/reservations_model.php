@@ -17,15 +17,15 @@ $config['list']['filter'] = [
         ],
         'location' => [
             'label' => 'lang:admin::lang.text_filter_location',
-            'type' => 'select',
+            'type' => 'selectlist',
             'conditions' => 'location_id = :filtered',
             'modelClass' => 'Admin\Models\Locations_model',
             'nameFrom' => 'location_name',
-            'locationAware' => TRUE,
+            'locationAware' => true,
         ],
         'status' => [
             'label' => 'lang:admin::lang.text_filter_status',
-            'type' => 'select',
+            'type' => 'selectlist',
             'conditions' => 'status_id = :filtered',
             'modelClass' => 'Admin\Models\Statuses_model',
             'options' => 'getDropdownOptionsForReservation',
@@ -59,6 +59,7 @@ $config['list']['bulkActions'] = [
         'label' => 'lang:admin::lang.button_delete',
         'class' => 'btn btn-light text-danger',
         'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm',
+        'permissions' => 'Admin.DeleteOrders',
     ],
 ];
 
@@ -77,25 +78,26 @@ $config['list']['columns'] = [
     'location_name' => [
         'label' => 'lang:admin::lang.reservations.column_location',
         'relation' => 'location',
-        'searchable' => TRUE,
-        'locationAware' => TRUE,
+        'select' => 'location_name',
+        'searchable' => true,
+        'locationAware' => true,
     ],
     'full_name' => [
         'label' => 'lang:admin::lang.label_name',
         'select' => "concat(first_name, ' ', last_name)",
-        'searchable' => TRUE,
+        'searchable' => true,
     ],
     'guest_num' => [
         'label' => 'lang:admin::lang.reservations.column_guest',
         'type' => 'number',
-        'searchable' => TRUE,
+        'searchable' => true,
     ],
     'table_name' => [
         'label' => 'lang:admin::lang.reservations.column_table',
         'type' => 'text',
         'relation' => 'tables',
         'select' => 'table_name',
-        'searchable' => TRUE,
+        'searchable' => true,
     ],
     'status_name' => [
         'label' => 'lang:admin::lang.label_status',
@@ -103,7 +105,7 @@ $config['list']['columns'] = [
         'select' => 'status_name',
         'type' => 'partial',
         'path' => 'statuses/form/status_column',
-        'searchable' => TRUE,
+        'searchable' => true,
     ],
     'assignee_name' => [
         'label' => 'lang:admin::lang.reservations.column_staff',
@@ -141,7 +143,7 @@ $config['form']['toolbar'] = [
     'buttons' => [
         'back' => [
             'label' => 'lang:admin::lang.button_icon_back',
-            'class' => 'btn btn-default',
+            'class' => 'btn btn-outline-secondary',
             'href' => 'reservations',
         ],
         'save' => [
@@ -167,7 +169,7 @@ $config['form']['toolbar'] = [
 $config['form']['fields'] = [
     '_info' => [
         'type' => 'partial',
-        'disabled' => TRUE,
+        'disabled' => true,
         'path' => 'reservations/form/info',
         'span' => 'left',
         'context' => ['edit', 'preview'],
@@ -260,7 +262,7 @@ $config['form']['tabs'] = [
             'label' => 'lang:admin::lang.reservations.label_date_added',
             'type' => 'datepicker',
             'mode' => 'date',
-            'disabled' => TRUE,
+            'disabled' => true,
             'span' => 'left',
             'context' => ['edit', 'preview'],
         ],
@@ -268,14 +270,14 @@ $config['form']['tabs'] = [
             'label' => 'lang:admin::lang.reservations.label_ip_address',
             'type' => 'text',
             'span' => 'right',
-            'disabled' => TRUE,
+            'disabled' => true,
             'context' => ['edit', 'preview'],
         ],
         'updated_at' => [
             'label' => 'lang:admin::lang.reservations.label_date_modified',
             'type' => 'datepicker',
             'mode' => 'date',
-            'disabled' => TRUE,
+            'disabled' => true,
             'span' => 'left',
             'context' => ['edit', 'preview'],
         ],
@@ -283,14 +285,14 @@ $config['form']['tabs'] = [
             'label' => 'lang:admin::lang.reservations.label_user_agent',
             'type' => 'text',
             'span' => 'right',
-            'disabled' => TRUE,
+            'disabled' => true,
             'context' => ['edit', 'preview'],
         ],
         'status_history' => [
             'tab' => 'lang:admin::lang.reservations.text_status_history',
             'type' => 'datatable',
             'context' => ['edit', 'preview'],
-            'useAjax' => TRUE,
+            'useAjax' => true,
             'defaultSort' => ['status_history_id', 'desc'],
             'columns' => [
                 'date_added_since' => [

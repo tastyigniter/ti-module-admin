@@ -61,12 +61,12 @@ class Connector extends BaseFormWidget
     /**
      * @var bool Items can be sorted.
      */
-    public $sortable = FALSE;
+    public $sortable = false;
 
     /**
      * @var bool Items can be edited.
      */
-    public $editable = TRUE;
+    public $editable = true;
 
     public $popupSize;
 
@@ -87,11 +87,11 @@ class Connector extends BaseFormWidget
             'popupSize',
         ]);
 
-        $fieldName = $this->formField->getName(FALSE);
+        $fieldName = $this->formField->getName(false);
         $this->sortableInputName = self::SORT_PREFIX.$fieldName;
 
         if ($this->formField->disabled || $this->formField->readOnly) {
-            $this->previewMode = TRUE;
+            $this->previewMode = true;
         }
     }
 
@@ -167,7 +167,7 @@ class Connector extends BaseFormWidget
         return $this->makePartial('recordeditor/form', [
             'formRecordId' => $recordId,
             'formTitle' => sprintf($formTitle, lang($this->formName)),
-            'formWidget' => $this->makeItemFormWidget($model, 'edit'),
+            'formWidget' => $this->makeItemFormWidget($model),
         ]);
     }
 
@@ -178,7 +178,7 @@ class Connector extends BaseFormWidget
         if (strlen($recordId = post('recordId')))
             $model = $model->find($recordId);
 
-        $form = $this->makeItemFormWidget($model, 'edit');
+        $form = $this->makeItemFormWidget($model);
 
         $this->validateFormWidget($form, $saveData = $form->getSaveData());
 
@@ -201,7 +201,7 @@ class Connector extends BaseFormWidget
     public function onDeleteRecord()
     {
         if (!strlen($recordId = post('recordId')))
-            return FALSE;
+            return false;
 
         $model = $this->getRelationModel()->find($recordId);
         if (!$model)
@@ -250,13 +250,13 @@ class Connector extends BaseFormWidget
         return $results;
     }
 
-    protected function makeItemFormWidget($model, $context)
+    protected function makeItemFormWidget($model)
     {
         $widgetConfig = is_string($this->form) ? $this->loadConfig($this->form, ['form'], 'form') : $this->form;
         $widgetConfig['model'] = $model;
         $widgetConfig['alias'] = $this->alias.'FormConnector';
         $widgetConfig['arrayName'] = $this->formField->arrayName.'[connectorData]';
-        $widgetConfig['context'] = $context;
+        $widgetConfig['context'] = 'edit';
         $widget = $this->makeWidget(Form::class, $widgetConfig);
 
         $widget->bindToController();
