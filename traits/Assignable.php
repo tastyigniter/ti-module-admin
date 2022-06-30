@@ -5,6 +5,7 @@ namespace Admin\Traits;
 use Admin\Facades\AdminAuth;
 use Admin\Models\Assignable_logs_model;
 use Admin\Models\Staff_groups_model;
+use Admin\Models\Staffs_model;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Assignable
@@ -15,7 +16,7 @@ trait Assignable
             $model->relation['belongsTo']['assignee'] = ['Admin\Models\Staffs_model'];
             $model->relation['belongsTo']['assignee_group'] = ['Admin\Models\Staff_groups_model'];
             $model->relation['morphMany']['assignable_logs'] = [
-                'Admin\Models\Assignable_logs_model', 'name' => 'assignable', 'delete' => TRUE,
+                'Admin\Models\Assignable_logs_model', 'name' => 'assignable', 'delete' => true,
             ];
 
             $model->addCasts([
@@ -49,7 +50,7 @@ trait Assignable
     public function assignTo($assignee)
     {
         if (is_null($this->assignee_group))
-            return FALSE;
+            return false;
 
         return $this->updateAssignTo($this->assignee_group, $assignee);
     }
@@ -63,12 +64,16 @@ trait Assignable
         return $this->updateAssignTo($group);
     }
 
-    public function updateAssignTo($group = null, $assignee = null)
+    public function updateAssignTo(Staff_groups_model $group = null, Staffs_model $assignee = null)
     {
         if (is_null($group))
             $group = $this->assignee_group;
 
-        $this->assignee_group()->associate($group);
+        if (is_null($group) && !is_null($assignee))
+            $group = $assignee->groups()->first();
+
+        if (!is_null($group))
+            $this->assignee_group()->associate($group);
 
         $oldAssignee = $this->assignee;
         if (!is_null($assignee))
@@ -78,8 +83,7 @@ trait Assignable
 
         $this->save();
 
-        if (!$log = Assignable_logs_model::createLog($this))
-            return FALSE;
+        $log = Assignable_logs_model::createLog($this);
 
         $this->fireSystemEvent('admin.assignable.assigned', [$log]);
 
