@@ -74,6 +74,9 @@ class ServiceProvider extends AppServiceProvider
                 'admin::_mail.reservation_update' => 'lang:system::lang.mail_templates.text_reservation_update',
                 'admin::_mail.password_reset' => 'lang:system::lang.mail_templates.text_password_reset_alert',
                 'admin::_mail.password_reset_request' => 'lang:system::lang.mail_templates.text_password_reset_request_alert',
+                'admin::_mail.invite' => 'lang:system::lang.mail_templates.text_invite',
+                'admin::_mail.invite_customer' => 'lang:system::lang.mail_templates.text_invite_customer',
+                'admin::_mail.low_stock_alert' => 'lang:system::lang.mail_templates.text_low_stock_alert',
             ]);
         });
     }
@@ -99,33 +102,33 @@ class ServiceProvider extends AppServiceProvider
     {
         Widgets::instance()->registerDashboardWidgets(function (Widgets $manager) {
             $manager->registerDashboardWidget(\System\DashboardWidgets\Activities::class, [
+                'code' => 'recent-activities',
                 'label' => 'Recent activities',
-                'context' => 'dashboard',
             ]);
 
             $manager->registerDashboardWidget(\System\DashboardWidgets\Cache::class, [
+                'code' => 'cache',
                 'label' => 'Cache Usage',
-                'context' => 'dashboard',
             ]);
 
             $manager->registerDashboardWidget(\System\DashboardWidgets\News::class, [
+                'code' => 'news',
                 'label' => 'Latest News',
-                'context' => 'dashboard',
             ]);
 
             $manager->registerDashboardWidget(\Admin\DashboardWidgets\Statistics::class, [
+                'code' => 'stats',
                 'label' => 'Statistics widget',
-                'context' => 'dashboard',
             ]);
 
             $manager->registerDashboardWidget(\Admin\DashboardWidgets\Onboarding::class, [
+                'code' => 'onboarding',
                 'label' => 'Onboarding widget',
-                'context' => 'dashboard',
             ]);
 
             $manager->registerDashboardWidget(\Admin\DashboardWidgets\Charts::class, [
+                'code' => 'charts',
                 'label' => 'Charts widget',
-                'context' => 'dashboard',
             ]);
         });
     }

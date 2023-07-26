@@ -19,7 +19,7 @@ $config['list']['filter'] = [
         'location' => [
             'label' => 'lang:admin::lang.text_filter_location',
             'type' => 'selectlist',
-            'conditions' => 'location_id = :filtered',
+            'scope' => 'whereHasLocation',
             'modelClass' => 'Admin\Models\Locations_model',
             'nameFrom' => 'location_name',
             'locationAware' => true,
@@ -128,6 +128,16 @@ $config['list']['columns'] = [
     ],
     'comment' => [
         'label' => 'lang:admin::lang.statuses.label_comment',
+        'invisible' => true,
+    ],
+    'telephone' => [
+        'label' => 'lang:admin::lang.customers.label_telephone',
+        'searchable' => true,
+        'invisible' => true,
+    ],
+    'email' => [
+        'label' => 'lang:admin::lang.label_email',
+        'searchable' => true,
         'invisible' => true,
     ],
 ];

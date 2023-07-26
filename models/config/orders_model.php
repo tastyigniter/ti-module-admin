@@ -1,4 +1,5 @@
 <?php
+
 $config['list']['filter'] = [
     'search' => [
         'prompt' => 'lang:admin::lang.orders.text_filter_search',
@@ -18,7 +19,7 @@ $config['list']['filter'] = [
         'location' => [
             'label' => 'lang:admin::lang.text_filter_location',
             'type' => 'selectlist',
-            'conditions' => 'location_id = :filtered',
+            'scope' => 'whereHasLocation',
             'modelClass' => 'Admin\Models\Locations_model',
             'nameFrom' => 'location_name',
             'locationAware' => true,
@@ -41,7 +42,7 @@ $config['list']['filter'] = [
         'payment' => [
             'label' => 'lang:admin::lang.orders.text_filter_payment',
             'type' => 'selectlist',
-            'conditions' => 'payment = :filtered',
+            'conditions' => 'payment IN(:filtered)',
             'modelClass' => 'Admin\Models\Payments_model',
             'options' => 'getDropdownOptions',
         ],
@@ -146,6 +147,16 @@ $config['list']['columns'] = [
     'order_total' => [
         'label' => 'lang:admin::lang.orders.column_total',
         'type' => 'currency',
+    ],
+    'telephone' => [
+        'label' => 'lang:admin::lang.customers.label_telephone',
+        'searchable' => true,
+        'invisible' => true,
+    ],
+    'email' => [
+        'label' => 'lang:admin::lang.label_email',
+        'searchable' => true,
+        'invisible' => true,
     ],
     'updated_at' => [
         'label' => 'lang:admin::lang.column_date_updated',

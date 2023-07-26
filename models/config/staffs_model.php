@@ -1,4 +1,5 @@
 <?php
+
 $config['list']['filter'] = [
     'search' => [
         'prompt' => 'lang:admin::lang.staff.text_filter_search',
@@ -16,7 +17,7 @@ $config['list']['filter'] = [
         'role' => [
             'label' => 'lang:admin::lang.staff.text_filter_role',
             'type' => 'selectlist',
-            'conditions' => 'staff_role_id = :filtered',
+            'conditions' => 'staff_role_id in (:filtered)',
             'modelClass' => 'Admin\Models\Staff_roles_model',
         ],
         'status' => [
@@ -143,12 +144,12 @@ $config['list']['columns'] = [
     ],
     'created_at' => [
         'label' => 'lang:admin::lang.column_date_added',
-        'type' => 'timesense',
+        'type' => 'datetime',
     ],
     'updated_at' => [
         'label' => 'lang:admin::lang.column_date_updated',
         'invisible' => true,
-        'type' => 'timesense',
+        'type' => 'datetime',
     ],
 ];
 
