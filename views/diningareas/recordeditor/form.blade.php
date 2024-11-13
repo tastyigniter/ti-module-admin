@@ -1,24 +1,26 @@
-<div class="modal-dialog modal-lg">
-    {!! form_open(
-        [
+<div class="modal-dialog modal-dialog-scrollable {{ $this->popupSize }}">
+    {!! form_open([
         'id' => $this->getId('record-editor-form'),
-            'role' => 'form',
-            'method' => $formWidget->context == 'create' ? 'POST' : 'PATCH',
-            'data-request' => $this->alias.'::onSaveRecord',
-            'data-control' => 'area-form',
-            'class' => 'w-100',
-        ]
-    ) !!}
+        'role' => 'form',
+        'method' => $formWidget->context == 'create' ? 'POST' : 'PATCH',
+        'data-request' => $this->alias.'::onSaveRecord',
+        'class' => 'w-100',
+    ]) !!}
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title">@lang($formTitle)</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
         </div>
-        <input type="hidden" name="areaId" value="{{ $formAreaId }}">
-        <input type="hidden" data-map-shape {!! $this->getMapShapeAttributes($formWidget->model) !!}>
+        <input type="hidden" name="recordId" value="{{ $formRecordId }}">
         <div class="modal-body">
             <div class="form-fields p-0">
                 @foreach ($formWidget->getFields() as $field)
+                    @if($field->fieldName == 'dining_area_id')
+                        @php $field->value = $formModel->id; @endphp
+                    @endif
+                    @if($field->fieldName == 'location_id')
+                        @php $field->value = $formModel->location_id; @endphp
+                    @endif
                     {!! $formWidget->renderField($field) !!}
                 @endforeach
             </div>

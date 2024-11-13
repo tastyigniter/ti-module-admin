@@ -4,8 +4,11 @@ namespace Admin\Controllers;
 
 use Admin\ActivityTypes\StatusUpdated;
 use Admin\Facades\AdminMenu;
+use Admin\Models\DiningArea;
 use Admin\Models\Reservations_model;
 use Admin\Models\Statuses_model;
+use DateInterval;
+use DatePeriod;
 use Exception;
 use Igniter\Flame\Exception\ApplicationException;
 
@@ -25,6 +28,15 @@ class Reservations extends \Admin\Classes\AdminController
             'title' => 'lang:admin::lang.reservations.text_title',
             'emptyMessage' => 'lang:admin::lang.reservations.text_empty',
             'defaultSort' => ['reservation_id', 'DESC'],
+            'configFile' => 'reservations_model',
+        ],
+        'floor_plan' => [
+            'model' => 'Admin\Models\Reservations_model',
+            'title' => 'lang:admin::lang.reservations.text_title',
+            'emptyMessage' => 'lang:admin::lang.reservations.text_empty',
+            'defaultSort' => ['reservation_id', 'DESC'],
+            'showCheckboxes' => false,
+            'showSetup' => false,
             'configFile' => 'reservations_model',
         ],
     ];
@@ -84,6 +96,17 @@ class Reservations extends \Admin\Classes\AdminController
         $this->vars['statusesOptions'] = \Admin\Models\Statuses_model::getDropdownOptionsForReservation();
     }
 
+    public function floor_plan()
+    {
+        $this->addJs('https://unpkg.com/konva@8.3.12/konva.min.js', 'konva-js');
+        $this->addCss('~/app/admin/formwidgets/floorplanner/assets/css/floorplanner.css', 'floorplanner-css');
+        $this->addJs('~/app/admin/formwidgets/floorplanner/assets/js/floorplanner.js', 'floorplanner-js');
+
+        $this->asExtension('ListController')->index();
+
+        $this->vars['statusesOptions'] = \Admin\Models\Statuses_model::getDropdownOptionsForReservation();
+    }
+
     public function index_onDelete()
     {
         if (!$this->getUser()->hasPermission('Admin.DeleteReservations'))
@@ -92,7 +115,7 @@ class Reservations extends \Admin\Classes\AdminController
         return $this->asExtension('Admin\Actions\ListController')->index_onDelete();
     }
 
-    public function index_onUpdateStatus()
+    public function onUpdateStatus()
     {
         $model = Reservations_model::find((int)post('recordId'));
         $status = Statuses_model::find((int)post('statusId'));
@@ -137,6 +160,11 @@ class Reservations extends \Admin\Classes\AdminController
         $reservation->save();
     }
 
+    public function listExtendQuery($query, $alias)
+    {
+        $query->with(['tables', 'status']);
+    }
+
     public function formExtendQuery($query)
     {
         $query->with([
@@ -146,5 +174,46 @@ class Reservations extends \Admin\Classes\AdminController
             'status_history.staff',
             'status_history.status',
         ]);
+    }
+
+    public function listFilterExtendScopesBefore($filter)
+    {
+        if ($filter->alias !== 'floor_plan_filter')
+            return;
+
+        $filter->scopes['reserve_date']['default'] = now()->toDateString();
+    }
+
+    public function listFilterExtendScopes($filter)
+    {
+        if ($filter->alias !== 'floor_plan_filter')
+            return;
+
+        if ($diningAreaId = $filter->getScopeValue('dining_area'))
+            $this->vars['diningArea'] = DiningArea::find($diningAreaId);
+
+        $reserveDateScope = $filter->getScope('reserve_date');
+        $reserveTimeScope = $filter->getScope('reserve_time');
+
+        $selectedDate = $filter->getScopeValue('reserve_date', $reserveDateScope->config['default']);
+
+        $reserveTimeScope->options = $this->getReserveTimeOptions($selectedDate) ?: ['No times available'];
+    }
+
+    protected function getReserveTimeOptions($date = null)
+    {
+        $items = [];
+
+        $date = make_carbon($date ?? now());
+        $start = $date->copy()->startOfDay();
+        $end = $date->copy()->endOfDay();
+        $interval = new DateInterval('PT15M');
+
+        $datePeriod = new DatePeriod($start, $interval, $end);
+        foreach ($datePeriod as $dateTime) {
+            $items[$dateTime->toDateTimeString()] = $dateTime->isoFormat(lang('system::lang.moment.time_format'));
+        }
+
+        return $items;
     }
 }

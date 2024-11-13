@@ -1,7 +1,7 @@
 <div class="row-fluid">
     {!! form_open([
-        'id'     => 'edit-form',
-        'role'   => 'form',
+        'id' => 'form-widget',
+        'role' => 'form',
         'method' => 'PATCH',
     ]) !!}
 

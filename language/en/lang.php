@@ -158,7 +158,7 @@ return [
         'dashboard' => 'Dashboard',
         'menu' => 'Menu Items',
         'category' => 'Categories',
-        'table' => 'Tables',
+        'tables' => 'Tables',
         'sale' => 'Sales',
         'order' => 'Orders',
         'reservation' => 'Reservations',
@@ -469,6 +469,81 @@ return [
 
         'alert_set_default_confirm' => 'Are you sure you want to set the current widgets as default for all users?',
         'alert_reset_layout_success' => 'Layout reset successfully',
+    ],
+
+    'dining_areas' => [
+        'text_title' => 'Dining Areas',
+        'text_form_name' => 'Dining Area',
+        'text_filter_search' => 'Search by name.',
+        'text_empty' => 'There are no dining areas available.',
+        'text_tab_tables' => 'Tables',
+        'text_tab_table_combos' => 'Combos',
+        'text_tab_table_layout' => 'Floor Plan',
+        'text_add_dining_area' => 'Dining Area',
+        'text_dining_section' => 'Section',
+
+        'button_apply_dining_section' => '<i class="fa fa-long-arrow-left"></i> Apply on selected tables',
+        'button_new_combo' => 'New combo',
+
+        'column_tables' => 'Tables',
+
+        'label_dining_areas' => 'Dining Areas',
+        'label_dining_sections' => 'Sections',
+        'label_tables' => 'Tables',
+        'label_table_combos' => 'Table Combinations',
+        'label_dining_table_combos' => 'Select table(s) to combine together',
+        'label_is_enabled' => 'Reservable',
+
+        'help_dining_sections' => 'Select a section to group the selected tables under',
+        'help_section_priority' => 'Tables in a higher priority section will be reserved before those in a lower priority section. With 10 being the highest priority, 0 being the lowest priority.',
+
+        'alert_tables_not_checked' => 'Please select at least two tables to combine.',
+        'alert_table_combo_section_mismatch' => 'The selected tables are not in the same section.',
+        'alert_table_already_combined' => 'One or more of the selected tables are already combined.',
+        'alert_section_not_found' => 'Section not found.',
+    ],
+
+    'dining_tables' => [
+        'text_title' => 'Tables',
+        'text_form_name' => 'Table',
+        'text_empty' => 'There are no tables available.',
+        'text_filter_search' => 'Search by name or capacity.',
+        'text_rectangle' => 'Rectangle',
+        'text_round' => 'Round',
+        'text_priority_0' => '0 - Lowest',
+        'text_priority_1' => '1',
+        'text_priority_2' => '2',
+        'text_priority_3' => '3',
+        'text_priority_4' => '4',
+        'text_priority_5' => '5',
+        'text_priority_6' => '6',
+        'text_priority_7' => '7',
+        'text_priority_8' => '8',
+        'text_priority_9' => '9 - Highest',
+
+        'column_min_capacity' => 'Minimum Capacity',
+        'column_capacity' => 'Maximum Capacity',
+        'column_extra_capacity' => 'Extra Capacity',
+        'column_section' => 'Section',
+        'column_priority' => 'Priority',
+
+        'label_min_capacity' => 'Minimum Capacity',
+        'label_capacity' => 'Maximum Capacity',
+        'label_extra_capacity' => 'Extra Capacity',
+        'label_priority' => 'Priority',
+        'label_table_shape' => 'Table Shape',
+        'label_is_enabled' => 'Reservable',
+
+        'help_tables' => 'Select a table to attach to this location.',
+        'help_extra_capacity' => 'Extra capacity is used internally by the staff to determine table convenience/inconvenience.',
+        'help_table_priority' => 'High priority tables will be reserved before low priority tables. With 10 being the highest priority, 0 being the lowest priority.',
+        'help_table_shape' => 'Select a shape to represent the table on the floor plan.',
+
+        'error_capacity' => 'The Maximum capacity value must be greater than minimum capacity value.',
+        'error_table_widget_data_not_specified' => 'The Table widget data source is not specified in the configuration.',
+        'error_table_widget_data_class_not_found' => 'The Table widget data source class "%s" could not be found.',
+        'error_cannot_delete_has_parent' => 'Cannot delete this table, it belongs to a combo',
+        'error_cannot_delete_has_children' => 'Cannot delete this table, it has tables combined to it',
     ],
 
     'locations' => [
@@ -825,12 +900,13 @@ return [
         'delete_reservations' => 'Delete reservations',
         'assign_orders' => 'Assign orders',
         'assign_reservations' => 'Assign reservations',
+        'assign_reservation_tables' => 'Ability to assign tables to reservations',
         'payments' => 'Manage payment gateways',
         'reservations' => 'Manage reservations',
         'staff_groups' => 'Manage staff groups',
         'staffs' => 'Create, edit and delete staffs',
         'statuses' => 'Manage orders and reservations statuses',
-        'tables' => 'Create, edit and delete reservations tables',
+        'dining_areas' => 'Create, edit and delete dining areas and tables',
         'mealtimes' => 'Create, edit and delete mealtimes',
         'allergens' => 'Create, edit and delete allergens',
     ],
@@ -843,13 +919,22 @@ return [
         'text_status_history' => 'Status History',
         'text_empty' => 'There are no reservations available.',
         'text_filter_assignee' => 'View all assignees',
+        'text_filter_dining_area' => 'View all dining areas',
+        'text_filter_date' => 'View all reservation dates',
+        'text_filter_time' => 'View all reservation times',
         'text_filter_search' => 'Search by id, location, guest number, status, customer or table name.',
         'text_switch_to_calendar' => 'Switch to calender view',
         'text_no_booking' => 'No Bookings',
+        'text_no_table' => 'No Table',
         'text_restaurant' => 'Location',
         'text_unassigned' => 'Yet to be Assigned',
         'text_assigned_to_self' => 'Assigned To Me',
         'text_assigned_to_others' => 'Assigned To Other Staff',
+        'text_view_calendar' => 'Calendar View',
+        'text_view_list' => 'List View',
+        'text_view_floor_plan' => 'Floor Plan View',
+
+        'button_assign_table' => 'Assign Table',
 
         'column_location' => 'Location',
         'column_customer_name' => 'Name',
@@ -869,6 +954,7 @@ return [
         'label_guest' => 'Guest Number',
         'label_reservation_date' => 'Reservation Date',
         'label_reservation_time' => 'Reservation Time',
+        'label_reservation_date_time' => 'Reservation Date Time',
         'label_reservation_duration' => 'Reservation Duration',
         'label_occasion' => 'Occasion',
         'label_date_added' => 'Date Added',
@@ -894,6 +980,9 @@ return [
         'activity_event_log_assigned' => 'assigned reservation (#:properties.reservation_id) to',
 
         'alert_no_reservation_found' => 'No matching reservation found.',
+        'alert_no_assignable_table' => 'No table available for the reservation.',
+        'alert_no_selected_dining_area' => 'No dining area selected. Please select a dining area filter to view the tables.',
+        'alert_table_assigned' => 'Table(s) has been assigned to the selected reservation(s).',
     ],
 
     'settings' => [
@@ -913,7 +1002,7 @@ return [
         'text_round_robin' => 'Round Robin',
         'text_load_balanced' => 'Load Balanced',
 
-        'label_auto_assign' => 'Automatic Order Assignment',
+        'label_auto_assign' => 'Automatic Assignment',
         'label_assignment_mode' => 'Assignment Mode',
         'label_assignment_availability' => 'Assignment Availability',
         'label_load_balanced_limit' => 'Load Balanced Limit',
@@ -922,7 +1011,7 @@ return [
 
         'alert_no_available_assignee' => 'No available assignee.',
 
-        'help_auto_assign' => 'Allocate and control the number of orders assigned to staff in this group.',
+        'help_auto_assign' => 'Allocate and control the number of orders or reservations assigned to staff in this group.',
         'help_round_robin' => 'Assign orders to the staff who are online in a circular fashion.',
         'help_load_balanced' => 'Limit the number of orders a staff can handle simultaneously.',
         'help_load_balanced_limit' => 'Maximum number of orders per staff.',
@@ -1069,9 +1158,11 @@ return [
         'label_extra_capacity' => 'Extra Capacity',
         'label_priority' => 'Priority',
         'label_joinable' => 'Is Joinable',
+        'label_stay_time' => 'Stay Time',
 
         'help_tables' => 'Select a table to attach to this location.',
         'help_extra_capacity' => 'Used internally by the staff to determine table convenience/inconvenience.',
+        'help_stay_time' => 'The maximum time in minutes a customer can stay at this table. Leave empty to use the default stay time.',
 
         'error_capacity' => 'The Maximum capacity value must be greater than minimum capacity value.',
         'error_table_widget_data_not_specified' => 'The Table widget data source is not specified in the configuration.',

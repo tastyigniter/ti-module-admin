@@ -91,7 +91,7 @@ $config['list']['columns'] = [
         'type' => 'number',
         'invisible' => true,
     ],
-    'location_name' => [
+    'locations' => [
         'label' => 'lang:admin::lang.column_location',
         'type' => 'text',
         'relation' => 'locations',

@@ -143,6 +143,10 @@ class ServiceProvider extends AppServiceProvider
             $manager->registerBulkActionWidget(\Admin\BulkActionWidgets\Delete::class, [
                 'code' => 'delete',
             ]);
+
+            $manager->registerBulkActionWidget(\Admin\BulkActionWidgets\AssignTable::class, [
+                'code' => 'assign_table',
+            ]);
         });
     }
 
@@ -175,6 +179,11 @@ class ServiceProvider extends AppServiceProvider
             $manager->registerFormWidget('Admin\FormWidgets\DatePicker', [
                 'label' => 'Date picker',
                 'code' => 'datepicker',
+            ]);
+
+            $manager->registerFormWidget('Admin\FormWidgets\FloorPlanner', [
+                'label' => 'Floor planner',
+                'code' => 'floorplanner',
             ]);
 
             $manager->registerFormWidget('Admin\FormWidgets\MapArea', [
@@ -347,11 +356,11 @@ class ServiceProvider extends AppServiceProvider
                             'title' => lang('admin::lang.side_menu.mealtimes'),
                             'permission' => 'Admin.Mealtimes',
                         ],
-                        'tables' => [
+                        'dining_areas' => [
                             'priority' => 50,
-                            'class' => 'tables',
-                            'href' => admin_url('tables'),
-                            'title' => lang('admin::lang.side_menu.table'),
+                            'class' => 'dining_areas',
+                            'href' => admin_url('dining_areas'),
+                            'title' => lang('admin::lang.side_menu.tables'),
                             'permission' => 'Admin.Tables',
                         ],
                     ],
@@ -668,9 +677,6 @@ class ServiceProvider extends AppServiceProvider
                 'Admin.Locations' => [
                     'label' => 'admin::lang.permissions.locations', 'group' => 'admin::lang.permissions.name',
                 ],
-                'Admin.Tables' => [
-                    'label' => 'admin::lang.permissions.tables', 'group' => 'admin::lang.permissions.name',
-                ],
                 'Admin.Orders' => [
                     'label' => 'admin::lang.permissions.orders', 'group' => 'admin::lang.permissions.name',
                 ],
@@ -680,6 +686,9 @@ class ServiceProvider extends AppServiceProvider
                 'Admin.AssignOrders' => [
                     'label' => 'admin::lang.permissions.assign_orders', 'group' => 'admin::lang.permissions.name',
                 ],
+                'Admin.Tables' => [
+                    'label' => 'admin::lang.permissions.dining_areas', 'group' => 'admin::lang.permissions.name',
+                ],
                 'Admin.Reservations' => [
                     'label' => 'admin::lang.permissions.reservations', 'group' => 'admin::lang.permissions.name',
                 ],
@@ -688,6 +697,9 @@ class ServiceProvider extends AppServiceProvider
                 ],
                 'Admin.AssignReservations' => [
                     'label' => 'admin::lang.permissions.assign_reservations', 'group' => 'admin::lang.permissions.name',
+                ],
+                'Admin.AssignReservationTables' => [
+                    'label' => 'admin::lang.permissions.assign_reservation_tables', 'group' => 'admin::lang.permissions.name',
                 ],
                 'Admin.Payments' => [
                     'label' => 'admin::lang.permissions.payments', 'group' => 'admin::lang.permissions.name',
