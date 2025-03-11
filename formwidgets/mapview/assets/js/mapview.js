@@ -96,8 +96,8 @@
         this.$mapView.css('height', this.options.mapHeight)
 
         var mapCenter = new google.maps.LatLng(
-            parseFloat(this.options.mapCenter.lat),
-            parseFloat(this.options.mapCenter.lng)
+                parseFloat(this.options.mapCenter.lat),
+                parseFloat(this.options.mapCenter.lng)
             ),
             mapOptions = {
                 zoom: this.options.mapZoom,
@@ -147,7 +147,7 @@
 
             var circle = shape.getMapObject('circle')
 
-            if (circle) {
+            if (circle && circle.draggable) {
                 innerData.circle = {
                     lat: circle.getCenter().lat(),
                     lng: circle.getCenter().lng(),
@@ -157,7 +157,7 @@
 
             var polygon = shape.getMapObject('polygon')
 
-            if (polygon) {
+            if (polygon && polygon.draggable) {
                 var vertices = polygon.getPath(),
                     encodedPath = google.maps.geometry.encoding.encodePath(vertices)
 
